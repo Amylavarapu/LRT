@@ -27,9 +27,7 @@ WHERE devices.device_report_product_code = '%s';'''%(pro_code),conn)
     df['AEID'] = df['AEID'].str.replace(r'[][]', '', regex=True)
     df['AEID'] = df['AEID'].str.split(',')
     df = df.explode('AEID', ignore_index = True)
-    df = df.replace(r"^ +| +$", r"", regex=True)        
-    df = data[['AEID','pma_pmn_number']]
-    df = df.groupby(['AEID','pma_pmn_number']).size().unstack().fillna(0).reset_index()
+    df = df.replace(r"^ +| +$", r"", regex=True)
     return df
     
 ''' This Code Pulls the patient problem adverse events for a specific product code in a given time frame '''
@@ -51,8 +49,6 @@ WHERE devices.device_report_product_code = '%s';'''%(pro_code),conn)
     df['AEID'] = df['AEID'].str.split(',')
     df = df.explode('AEID', ignore_index = True)
     df = df.replace(r"^ +| +$", r"", regex=True)
-    df = data[['AEID','pma_pmn_number']]
-    df = df.groupby(['AEID','pma_pmn_number']).size().unstack().fillna(0).reset_index()
     return df
 
 def flogLRv(x, fnidot, fndotj, fndotdot):
@@ -69,8 +65,7 @@ def flogLRv(x, fnidot, fndotj, fndotdot):
 
 def fpvalue(x, fsim):
     return np.mean(fsim >= x)
-   
- def calculate_lrt(
+def calculate_lrt(
     data: pd.DataFrame,
     row_var: str='imdrf_term',
     col_var: str='brand_name',
@@ -104,7 +99,12 @@ def fpvalue(x, fsim):
 
     logging.info(f'=== Calculating number of cases reported for all {row_var} and {col_var} variables')
     #nijs = data.rename(columns={row_var:'AEID'}) # cause that's how R code expects this column to be called
-    nijs = data
+    nijs = data[[row_var,col_var]]
+    row_var = 'AEID' # when R code is fixes to use whatever variable this row can be deleted
+    #nijs = nijs[[row_var,col_var]]
+    nijs = nijs.groupby([row_var, col_var]).size().unstack().fillna(0).reset_index()
+    nijs = nijs.rename(columns={0:'Not provided'})    
+
     
     logging.info(f'=== Calculating marginal total for {col_var} column variable')
     col_vars = nijs.columns[1:]
@@ -199,3 +199,13 @@ def fpvalue(x, fsim):
     logging.info(f'=== Finished LRT calculation. Resulting table contains {len(result)} rows.')
 
     return result
+
+
+def calculate_procode_lrt(pro_code, lower_date, upper_date):
+    df = procode_lrt_df(pro_code, lower_date, upper_date)
+    df = calculate_lrt(df, 'AEID', 'pma_pmn_number', './S-11')
+    df['problem type'] = 'Product Problem'
+    df2 = calculate_lrt(patient_problem_df(pro_code,lower_date ,upper_date),'AEID','pma_pmn_number','./S-11')
+    df2['problem type'] = 'Patient Problem'
+    df = df.append(df2, ignore_index=True)
+    return df 
