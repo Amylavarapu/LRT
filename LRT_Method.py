@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 import logging
 
-''' This Code Pulls the adverse events for a specific product code in a given time frame '''
+''' This Code Pulls the product problem adverse events for a specific product code in a given time frame '''
 def procode_lrt_df(pro_code, lower_date: str = 'YYYY-MM-DD', upper_date: str = 'YYYY-MM-DD'):
     df = pd.read_sql(f'''SELECT pma_pmn_number, date_received, date_of_event, date_report, mdr_report_key, adverse_event_flag, product_problems
 FROM "fda-open-database"."event", 
