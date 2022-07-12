@@ -27,6 +27,7 @@ WHERE devices.device_report_product_code = '%s';'''%(pro_code),conn)
     df['AEID'] = df['AEID'].str.replace(r'[][]', '', regex=True)
     df['AEID'] = df['AEID'].str.split(',')
     df = df.explode('AEID', ignore_index = True)
+    df = df.replace(r"^ +| +$", r"", regex=True)        
     df = data[['AEID','pma_pmn_number']]
     df = df.groupby(['AEID','pma_pmn_number']).size().unstack().fillna(0).reset_index()
     return df
@@ -49,6 +50,7 @@ WHERE devices.device_report_product_code = '%s';'''%(pro_code),conn)
     df['AEID'] = df['AEID'].str.replace(r'[][]', '', regex=True)
     df['AEID'] = df['AEID'].str.split(',')
     df = df.explode('AEID', ignore_index = True)
+    df = df.replace(r"^ +| +$", r"", regex=True)
     df = data[['AEID','pma_pmn_number']]
     df = df.groupby(['AEID','pma_pmn_number']).size().unstack().fillna(0).reset_index()
     return df
