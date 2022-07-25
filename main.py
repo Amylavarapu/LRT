@@ -9,7 +9,7 @@ def preds_lrt(k_number, lower_date: str = 'YYYY-MM-DD', upper_date: str = 'YYYY-
 
 def calculate_predicate_lrt(k_number, lower_date, upper_date):
     k_number = k_number.upper()
-    df = lrt_predicate_data.preds_lrt(k_number, lower_date, upper_date)
+    df = preds_lrt(k_number, lower_date, upper_date)
     df['problem type'] = 'Product Problem'
     df2 = lrt_functions.calculate_lrt(lrt_predicate_data.patient_problem_preds(k_number,lower_date ,upper_date),'AEID','pma_pmn_number','./S-11')
     df2['problem type'] = 'Patient Problem'
