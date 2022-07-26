@@ -1,4 +1,6 @@
 # LRT
 
-|table test|test|
-|sdf|dfsdf|
+| Syntax      | Description |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |
