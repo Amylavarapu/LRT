@@ -14,8 +14,6 @@ The output follows this Schema
 
 |Feature| Description|
 |----|----|
-
-## LRT Using Predicates
 |aeid (row_var)| |
 |ntrt ||
 |nidot ||
@@ -33,6 +31,7 @@ The output follows this Schema
 |pvalue||
 |col_var||
 
+## LRT Using Predicates
 calculate_predicate_lrt takes 3 inputs. The k number whose predicates we want to generate LRT alerts for, the lower date of our time window and the upper date of our time window. The output is a datagram with the following schema.
 
 |Feature| Description|
