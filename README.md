@@ -5,6 +5,8 @@ The lrt fucntion can take any dataframe as an input that is in the following Sch
 |----|----|
 |AEID| The code for the adverse event or keyword|
 |Device| This can be the brand name or submission number|
+
+
 The output follows this Schema
 
 |Feature| Description|
