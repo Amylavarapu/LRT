@@ -3,17 +3,9 @@ The LRT Function has two methods
 
 ## LRT Using Predicates
 
-'''
- calculate_predicate_lrt(k_number, lower_date, upper_date):
-    Args:
-    ----
-    k_number: str, The device that we want to pull predicate information for 
-    lower_date: str, The lower date of the time window we want to explore.
-    upper_date: str, The upper date of the time window.
-'''
-    
-    Output: pd.Dataframe,
-    'AEID', 'k_number', 'is_signal', 'pvalue', 'problem type', 'Device Generation'
-    
+calculate_predicate_lrt takes 3 inputs. The k number whose predicates we want to generate LRT alerts for, the lower date of our time window and the upper date of our time window. The output is a datagram with the following schema.
 
+
+|'AEID'| 'k_number'| 'is_signal'| 'pvalue' | 'problem type' | 'Device Generation'|
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 
