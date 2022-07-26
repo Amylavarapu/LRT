@@ -12,6 +12,17 @@ import logging
 
 ''' This Code Pulls the product problem adverse events for a specific product code in a given time frame '''
 def procode_lrt_df(pro_code, lower_date: str = 'YYYY-MM-DD', upper_date: str = 'YYYY-MM-DD'):
+                        '''
+            Args:
+            ----- 
+            pro_code: str, the product code where we want to generate product problem lrt alerts for
+            lower_date: str,
+            upper_date: str,
+            
+            ----
+            Output: pd.dataframe, 'AEID', pma_pmn_number
+            
+            '''
     pro_code = pro_code.upper()
     df = pd.read_sql(f'''SELECT pma_pmn_number, date_received, date_of_event, date_report, mdr_report_key, adverse_event_flag, product_problems, devices.device_report_product_code
 FROM "fda-open-database"."event", 
@@ -37,6 +48,17 @@ WHERE devices.device_report_product_code = '{pro_code}' AND date_received >= '{l
 
 
 def patient_problem_df(pro_code, lower_date: str = 'YYYY-MM-DD', upper_date: str = 'YYYY-MM-DD'):
+                                '''
+            Args:
+            ----- 
+            pro_code: str, the product code where we want to generate patient problem lrt alerts for
+            lower_date: str,
+            upper_date: str,
+            
+            ----
+            Output: pd.dataframe, 'AEID', pma_pmn_number
+            
+            '''
     pro_code = pro_code.upper()
     df = pd.read_sql(f'''SELECT pma_pmn_number, date_received, date_of_event, date_report, mdr_report_key, adverse_event_flag, patients.patient_problems
 FROM "fda-open-database"."event", 
